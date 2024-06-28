@@ -1,4 +1,5 @@
 const items = document.querySelectorAll(".countdown-item > h4");
+const NewYearMessage = document.querySelector(".new-year-message")
 
 function initCountDate() {
   // Получаем текущее время
@@ -6,16 +7,16 @@ let nowDate = new Date();
 
 // Получаем текущий год
 let year = nowDate.getFullYear();
-console.log(year);
 
 // Назначаем дату отчета
-let countdownDate = new Date(year, 5, 28, 23, 16, 0, 0);
+let countdownDate = new Date(year, 11, 31, 23, 59, 59, 999);
 
-// Проверяем прошла ли дата в текущем году
-if (nowDate > countdownDate) {
-  countdownDate = new Date(year + 1, 5, 28, 23, 1, 0, 0);
+
+  // Проверяем прошла ли дата в текущем году
+  if (nowDate > countdownDate) {
+    countdownDate = new Date(year + 1, 11, 31, 23, 59, 59, 999);
   }
-return countdownDate;
+  return countdownDate;
 }
 
 let countdownDate = initCountDate();
@@ -27,16 +28,38 @@ function getCountDownTime() {
   // Находим разницу времени
   const distance = countdownDate.getTime() - now;
 
-  if(distance < 0) {
-    //Обновляем дату отчета на сл год
-    countdownDate = new Date(countdownDate.getFullYear() + 1, 5, 28, 23, 1, 0, 0);
-    return;
-  }
-
   // Создаем переменные в миллисекундах
   const oneDay = 24 * 60 * 60 * 1000;
   const oneHour = 60 * 60 * 1000;
   const oneMinute = 60 * 1000;
+
+  if(distance <= 0) {
+    //Показываем сообщение "С новым годом"
+    NewYearMessage.style.display = "block";
+
+    //Скрыть счетчик
+    items.forEach(function (item) {
+      item.parentElement.style.display = "none";
+    });
+
+    //Обновляем дату отчета на сл год
+    countdownDate = new Date(countdownDate.getFullYear() + 1, 5, 28, 23, 1, 0, 0);
+
+    setTimeout(() => {
+      //Скрываем сообщение
+      NewYearMessage.style.display = "none";
+
+    //Показываем счетчик
+    items.forEach(function (item) {
+      item.parentElement.style.display = "block";
+    });
+
+    //Обновляем дату на следующий год и перезапускаем счетчик
+    getCountDownTime();
+    }, 60 * 1000); //24 * 60 * 60 * 100); //24 часа
+
+    return;
+  }
 
   // Подсчитываем дни, часы, минуты и секунды
   let days = Math.floor(distance / oneDay);

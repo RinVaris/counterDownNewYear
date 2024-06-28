@@ -46,3 +46,13 @@ body {
   min-width: 65px;
   border-radius: 8px;
 }
+
+.new-year-message {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  text-align: center;
+  font-size: 32px;
+  min-width: 320px;
+  color: red;
+}
